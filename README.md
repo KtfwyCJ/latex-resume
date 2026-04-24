@@ -12,11 +12,11 @@ A modern web application for creating professional resumes using LaTeX templates
 
 ## Screenshots
 
-### LaTeX Editor Page
-![LaTeX Editor Page](screenshot.jpg)
+####  LaTeX Editor Page
+![LaTeX Editor Page](public/screenshot.jpg)
 
-### PDF Upload Page
-![PDF Upload Page](screenshot1.jpg)
+#### LaTex template samples
+![PDF Upload Page](public/screenshot2.jpg)
 
 ## Tech Stack
 
