@@ -85,7 +85,7 @@ export default function TemplateGallery({ templates, onSelect, onBack }: Props) 
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Header */}
-      <header className="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
+      <header className="sticky top-0 z-10 flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
@@ -96,7 +96,7 @@ export default function TemplateGallery({ templates, onSelect, onBack }: Props) 
           <span className="text-gray-200">|</span>
           <span className="font-bold tracking-tight text-gray-800">
             LaTeX{' '}
-            <span className="text-primary">
+            <span className="text-transparent bg-gradient-to-r from-sky-600 to-teal-500 bg-clip-text">
               Resume Builder
             </span>
           </span>

@@ -109,7 +109,7 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
     <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-slate-50">
       {/* Resume draft banner */}
       {draft && (
-        <div className="fixed top-0 inset-x-0 z-40 flex items-center justify-between gap-3 px-5 py-2.5 bg-slate-800 text-white text-sm">
+        <div className="fixed top-0 inset-x-0 z-40 flex items-center justify-between gap-3 px-5 py-2.5 bg-slate-800 text-white text-sm bg-gradient-to-r from-sky-600 to-teal-500 ">
           <span className="flex items-center gap-2">
             <span>You have changes saved {draftAge(draft.savedAt)} —</span>
             <button
@@ -121,7 +121,7 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
           </span>
           <button
             onClick={() => { clearResume(); setDraft(null); }}
-            className="leading-none transition-colors text-slate-400 hover:text-white"
+            className="leading-none text-white transition-colors"
             aria-label="Dismiss"
           >
             ✕
