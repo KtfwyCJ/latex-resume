@@ -28,7 +28,7 @@ function AppRoutes() {
         path="/editor"
         element={
           latexSource
-            ? <EditorPage initialLatex={latexSource} onBack={() => { setLatexSource(''); navigate('/'); }} />
+            ? <EditorPage initialLatex={latexSource} onBack={() => { setLatexSource(''); navigate(-1); }} />
             : <Navigate to="/" replace />
         }
       />

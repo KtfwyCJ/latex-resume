@@ -99,20 +99,20 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
   const copyTex = () => navigator.clipboard.writeText(source);
 
   return (
-    <div className="h-screen flex flex-col bg-white">
+    <div className="flex flex-col h-screen bg-white">
       {/* Top bar */}
-      <header className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-white shadow-sm">
+      <header className="flex items-center justify-between px-5 py-3 bg-white border-b border-gray-100 shadow-sm">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="text-sm text-gray-400 hover:text-indigo-500 transition-colors flex items-center gap-1"
+            className="flex items-center gap-1 text-sm transition-colors text-slate-400 hover:text-primary"
           >
             ← Back
           </button>
-          <span className="text-gray-200">|</span>
-          <span className="font-bold text-gray-800 tracking-tight">
+          <span className="text-slate-200">|</span>
+          <span className="font-bold tracking-tight text-slate-800">
             LaTeX{' '}
-            <span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+            <span className="text-transparent bg-gradient-to-r from-sky-600 to-teal-500 bg-clip-text">
               Resume Builder
             </span>
           </span>
@@ -123,20 +123,20 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
       <div ref={containerRef} className="flex flex-1 overflow-hidden">
         {/* Left: LaTeX editor */}
         <div className="flex flex-col overflow-hidden" style={{ width: `${splitPct}%` }}>
-          <div className="flex items-center justify-between px-4 py-2 bg-gray-50 border-b border-gray-100">
-            <span className="text-xs font-bold tracking-widest uppercase text-gray-400">
+          <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 bg-gray-50">
+            <span className="text-xs font-bold tracking-widest text-gray-400 uppercase">
               LaTeX Source
             </span>
             <div className="flex gap-2">
               <button
                 onClick={copyTex}
-                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-indigo-500 font-semibold hover:bg-indigo-50 transition-colors"
+                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-primary font-semibold hover:bg-neutral transition-colors"
               >
                 Copy
               </button>
               <button
                 onClick={downloadTex}
-                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-indigo-500 font-semibold hover:bg-indigo-50 transition-colors"
+                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-primary font-semibold hover:bg-neutral transition-colors"
               >
                 Download .tex
               </button>
@@ -168,13 +168,13 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
             <div className="border-t border-red-100 bg-red-50">
               <button
                 onClick={() => setErrorOpen((o) => !o)}
-                className="w-full flex items-center justify-between px-4 py-2 text-xs font-semibold text-red-500"
+                className="flex items-center justify-between w-full px-4 py-2 text-xs font-semibold text-red-500"
               >
                 <span>⚠ Compile error</span>
                 <span>{errorOpen ? '▲' : '▼'}</span>
               </button>
               {errorOpen && (
-                <pre className="px-4 pb-3 text-xs text-red-400 font-mono whitespace-pre-wrap max-h-40 overflow-y-auto">
+                <pre className="px-4 pb-3 overflow-y-auto font-mono text-xs text-red-400 whitespace-pre-wrap max-h-40">
                   {compileError}
                 </pre>
               )}
@@ -185,13 +185,13 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
         {/* Draggable divider */}
         <div
           onMouseDown={onDividerMouseDown}
-          className="w-1 bg-gray-200 hover:bg-indigo-400 cursor-col-resize transition-colors flex-shrink-0"
+          className="flex-shrink-0 w-1 transition-colors bg-gray-200 hover:bg-primary cursor-col-resize"
         />
 
         {/* Right: PDF preview */}
-        <div className="flex flex-col bg-gray-50 overflow-hidden" style={{ width: `${100 - splitPct}%` }}>
-          <div className="flex items-center justify-between px-4 py-2 bg-gray-50 border-b border-gray-100">
-            <span className="text-xs font-bold tracking-widest uppercase text-gray-400">
+        <div className="flex flex-col overflow-hidden bg-gray-50" style={{ width: `${100 - splitPct}%` }}>
+          <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 bg-gray-50">
+            <span className="text-xs font-bold tracking-widest text-gray-400 uppercase">
               PDF Preview
             </span>
             <div className="flex gap-2">
@@ -200,9 +200,9 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
                 disabled={compiling}
                 className="
                   text-xs px-3 py-1.5 rounded-lg font-semibold transition-all
-                  bg-gradient-to-r from-indigo-500 to-purple-500 text-white
-                  shadow shadow-indigo-200
-                  hover:from-indigo-600 hover:to-purple-600
+                  bg-primary text-white
+                  shadow shadow-primary/20
+                  hover:bg-primary/90
                   disabled:opacity-50 disabled:cursor-not-allowed
                 "
               >
@@ -211,18 +211,18 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
               <button
                 onClick={downloadPdf}
                 disabled={!pdfUrl}
-                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-indigo-500 font-semibold hover:bg-indigo-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-primary font-semibold hover:bg-neutral transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Download PDF
               </button>
             </div>
           </div>
 
-          <div className="flex-1 relative">
+          <div className="relative flex-1">
             {compiling && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-50 z-10">
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-50">
                 <div className="flex flex-col items-center gap-3">
-                  <div className="w-8 h-8 border-4 border-indigo-200 border-t-indigo-500 rounded-full animate-spin" />
+                  <div className="w-8 h-8 border-4 rounded-full border-primary/20 border-t-primary animate-spin" />
                   <p className="text-sm text-gray-400">Compiling LaTeX…</p>
                 </div>
               </div>
@@ -242,7 +242,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
             ) : null}
           </div>
 
-          <div className="px-4 py-2 border-t border-gray-100 bg-white text-center text-xs text-gray-300">
+          <div className="px-4 py-2 text-xs text-center text-gray-300 bg-white border-t border-gray-100">
             Compiled via LaTeX.Online · click Recompile after edits
           </div>
         </div>
