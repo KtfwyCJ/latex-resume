@@ -12,6 +12,9 @@ A modern web application for creating professional resumes using LaTeX templates
 
 ## Screenshots
 
+#### CV Upload Page
+![CV Upload Page](public/screenshot3.jpg)
+
 ####  LaTeX Editor Page
 ![LaTeX Editor Page](public/screenshot.jpg)
 
