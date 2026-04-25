@@ -12,4 +12,5 @@ body {
   background-color: #faf8f4;
   font-family: 'EB Garamond', Georgia, serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
