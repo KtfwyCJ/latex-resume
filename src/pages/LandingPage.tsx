@@ -307,14 +307,35 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
                 textTransform: 'uppercase',
                 color: 'rgba(245,240,232,0.3)',
                 marginBottom: 4,
+                pointerEvents: 'none',
               }}
             >
               {isDragging ? 'Release to upload' : 'Drop your PDF here'}
             </p>
-            <span style={{ fontFamily: 'DM Mono, monospace', fontSize: 11, color: 'rgba(245,240,232,0.18)' }}>
+            <span style={{ fontFamily: 'DM Mono, monospace', fontSize: 11, color: 'rgba(245,240,232,0.18)', pointerEvents: 'none' }}>
               PDF only · Max 10 MB
             </span>
           </div>
+
+          {/* Inline error — visible without scrolling */}
+          {error && (
+            <div
+              style={{
+                marginTop: 12,
+                padding: '10px 16px',
+                background: 'rgba(180,60,60,0.15)',
+                border: '1px solid rgba(200,80,80,0.3)',
+                borderRadius: 4,
+                color: 'rgba(255,180,180,0.9)',
+                fontFamily: 'DM Mono, monospace',
+                fontSize: 10,
+                letterSpacing: '1px',
+                textAlign: 'center',
+              }}
+            >
+              {error}
+            </div>
+          )}
         </div>
       </section>
 
