@@ -54,7 +54,6 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
     setCompileError('');
     const result = await compileLatex(latexSource);
     setCompiling(false);
-
     if (result.ok && result.pdfUrl) {
       if (prevPdfUrl.current) URL.revokeObjectURL(prevPdfUrl.current);
       prevPdfUrl.current = result.pdfUrl;
@@ -67,9 +66,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
 
   useEffect(() => {
     compile(initialLatex);
-    return () => {
-      if (prevPdfUrl.current) URL.revokeObjectURL(prevPdfUrl.current);
-    };
+    return () => { if (prevPdfUrl.current) URL.revokeObjectURL(prevPdfUrl.current); };
   }, []);
 
   useEffect(() => {
@@ -82,40 +79,115 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
     const blob = new Blob([source], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = 'resume.tex';
-    a.click();
+    a.href = url; a.download = 'resume.tex'; a.click();
     URL.revokeObjectURL(url);
   };
 
   const downloadPdf = () => {
     if (!pdfUrl) return;
     const a = document.createElement('a');
-    a.href = pdfUrl;
-    a.download = 'resume.pdf';
-    a.click();
+    a.href = pdfUrl; a.download = 'resume.pdf'; a.click();
   };
 
   const copyTex = () => navigator.clipboard.writeText(source);
 
+  const ghostBtn: React.CSSProperties = {
+    fontFamily: 'DM Mono, monospace',
+    fontSize: 9,
+    letterSpacing: '1.5px',
+    textTransform: 'uppercase',
+    padding: '5px 12px',
+    background: 'rgba(245,240,232,0.07)',
+    color: 'rgba(245,240,232,0.5)',
+    border: '1px solid rgba(245,240,232,0.12)',
+    borderRadius: 2,
+    cursor: 'pointer',
+  };
+
+  const solidBtn: React.CSSProperties = {
+    ...ghostBtn,
+    background: '#c8a97e',
+    color: '#0a0806',
+    border: '1px solid #c8a97e',
+  };
+
+  const paneHeader: React.CSSProperties = {
+    background: '#161616',
+    borderBottom: '1px solid rgba(200,169,126,0.1)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '8px 14px',
+    flexShrink: 0,
+  };
+
+  const paneLabel: React.CSSProperties = {
+    fontFamily: 'DM Mono, monospace',
+    fontSize: 9,
+    letterSpacing: '2px',
+    textTransform: 'uppercase',
+    color: 'rgba(200,169,126,0.4)',
+  };
+
   return (
-    <div className="flex flex-col h-screen bg-white">
+    <div className="flex flex-col h-screen" style={{ background: '#0d0d0d' }}>
       {/* Top bar */}
-      <header className="flex items-center justify-between px-5 py-3 bg-white border-b border-gray-100 shadow-sm">
+      <header
+        className="flex items-center justify-between flex-shrink-0"
+        style={{
+          padding: '0 20px',
+          height: 46,
+          background: '#0d0d0d',
+          borderBottom: '1px solid rgba(200,169,126,0.15)',
+        }}
+      >
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="flex items-center gap-1 text-sm transition-colors text-slate-400 hover:text-primary"
+            style={{
+              fontFamily: 'DM Mono, monospace',
+              fontSize: 9,
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              color: 'rgba(245,240,232,0.35)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+            }}
           >
             ← Back
           </button>
-          <span className="text-slate-200">|</span>
-          <span className="font-bold tracking-tight text-slate-800">
+          <span style={{ color: 'rgba(200,169,126,0.2)', fontSize: 12 }}>|</span>
+          <span
+            style={{
+              fontFamily: '"Playfair Display", Georgia, serif',
+              fontSize: 16,
+              fontWeight: 700,
+              color: '#f5f0e8',
+              letterSpacing: '-0.02em',
+            }}
+          >
             LaTeX{' '}
-            <span className="text-transparent bg-gradient-to-r from-sky-600 to-teal-500 bg-clip-text">
-              Resume Builder
-            </span>
+            <em style={{ color: '#c8a97e', fontStyle: 'italic' }}>Resume Builder</em>
           </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={copyTex} style={ghostBtn}>Copy</button>
+          <button onClick={downloadTex} style={ghostBtn}>Download .tex</button>
+          <button
+            onClick={() => compile(source)}
+            disabled={compiling}
+            style={{ ...solidBtn, opacity: compiling ? 0.5 : 1, cursor: compiling ? 'not-allowed' : 'pointer' }}
+          >
+            {compiling ? 'Compiling…' : '↺ Recompile'}
+          </button>
+          <button
+            onClick={downloadPdf}
+            disabled={!pdfUrl}
+            style={{ ...ghostBtn, opacity: !pdfUrl ? 0.4 : 1, cursor: !pdfUrl ? 'not-allowed' : 'pointer' }}
+          >
+            Download PDF
+          </button>
         </div>
       </header>
 
@@ -123,23 +195,11 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
       <div ref={containerRef} className="flex flex-1 overflow-hidden">
         {/* Left: LaTeX editor */}
         <div className="flex flex-col overflow-hidden" style={{ width: `${splitPct}%` }}>
-          <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 bg-gray-50">
-            <span className="text-xs font-bold tracking-widest text-gray-400 uppercase">
-              LaTeX Source
-            </span>
+          <div style={paneHeader}>
+            <span style={paneLabel}>LaTeX Source</span>
             <div className="flex gap-2">
-              <button
-                onClick={copyTex}
-                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-primary font-semibold hover:bg-neutral transition-colors"
-              >
-                Copy
-              </button>
-              <button
-                onClick={downloadTex}
-                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-primary font-semibold hover:bg-neutral transition-colors"
-              >
-                Download .tex
-              </button>
+              <button onClick={copyTex} style={ghostBtn}>Copy</button>
+              <button onClick={downloadTex} style={ghostBtn}>Download .tex</button>
             </div>
           </div>
 
@@ -149,7 +209,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
               defaultLanguage="latex"
               value={source}
               onChange={(val) => setSource(val ?? '')}
-              theme="light"
+              theme="vs-dark"
               options={{
                 fontSize: 13,
                 lineNumbers: 'on',
@@ -165,16 +225,43 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
 
           {/* Compile error panel */}
           {compileError && (
-            <div className="border-t border-red-100 bg-red-50">
+            <div
+              style={{
+                borderTop: '1px solid rgba(200,80,80,0.3)',
+                background: '#1a0f0f',
+                flexShrink: 0,
+              }}
+            >
               <button
                 onClick={() => setErrorOpen((o) => !o)}
-                className="flex items-center justify-between w-full px-4 py-2 text-xs font-semibold text-red-500"
+                className="flex items-center justify-between w-full"
+                style={{
+                  padding: '8px 16px',
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: 10,
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  color: 'rgba(220,80,80,0.7)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
               >
                 <span>⚠ Compile error</span>
                 <span>{errorOpen ? '▲' : '▼'}</span>
               </button>
               {errorOpen && (
-                <pre className="px-4 pb-3 overflow-y-auto font-mono text-xs text-red-400 whitespace-pre-wrap max-h-40">
+                <pre
+                  style={{
+                    padding: '0 16px 12px',
+                    fontFamily: 'DM Mono, monospace',
+                    fontSize: 11,
+                    color: 'rgba(220,80,80,0.6)',
+                    whiteSpace: 'pre-wrap',
+                    overflowY: 'auto',
+                    maxHeight: 160,
+                  }}
+                >
                   {compileError}
                 </pre>
               )}
@@ -185,64 +272,90 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
         {/* Draggable divider */}
         <div
           onMouseDown={onDividerMouseDown}
-          className="flex-shrink-0 w-1 transition-colors bg-gray-200 hover:bg-primary cursor-col-resize"
+          style={{
+            width: 3,
+            flexShrink: 0,
+            background: 'rgba(200,169,126,0.15)',
+            cursor: 'col-resize',
+            transition: 'background 0.15s',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(200,169,126,0.4)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(200,169,126,0.15)'; }}
         />
 
         {/* Right: PDF preview */}
-        <div className="flex flex-col overflow-hidden bg-gray-50" style={{ width: `${100 - splitPct}%` }}>
-          <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 bg-gray-50">
-            <span className="text-xs font-bold tracking-widest text-gray-400 uppercase">
-              PDF Preview
-            </span>
-            <div className="flex gap-2">
-              <button
-                onClick={() => compile(source)}
-                disabled={compiling}
-                className="
-                  text-xs px-3 py-1.5 rounded-lg font-semibold transition-all
-                  bg-primary text-white
-                  shadow shadow-primary/20
-                  hover:bg-primary/90
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                "
-              >
-                {compiling ? 'Compiling…' : '↺ Recompile'}
-              </button>
-              <button
-                onClick={downloadPdf}
-                disabled={!pdfUrl}
-                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-primary font-semibold hover:bg-neutral transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                Download PDF
-              </button>
-            </div>
+        <div className="flex flex-col overflow-hidden" style={{ width: `${100 - splitPct}%` }}>
+          <div
+            style={{
+              ...paneHeader,
+              background: '#0d0d0d',
+              borderBottom: '1px solid rgba(200,169,126,0.1)',
+            }}
+          >
+            <span style={paneLabel}>PDF Preview</span>
           </div>
 
-          <div className="relative flex-1">
+          <div className="relative flex-1" style={{ background: '#faf8f4' }}>
             {compiling && (
-              <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-50">
+              <div
+                className="absolute inset-0 z-10 flex items-center justify-center"
+                style={{ background: '#faf8f4' }}
+              >
                 <div className="flex flex-col items-center gap-3">
-                  <div className="w-8 h-8 border-4 rounded-full border-primary/20 border-t-primary animate-spin" />
-                  <p className="text-sm text-gray-400">Compiling LaTeX…</p>
+                  <div
+                    className="w-8 h-8 border-4 rounded-full animate-spin"
+                    style={{ borderColor: 'rgba(61,53,48,0.15)', borderTopColor: '#c8a97e' }}
+                  />
+                  <p
+                    style={{
+                      fontFamily: 'DM Mono, monospace',
+                      fontSize: 11,
+                      letterSpacing: 1,
+                      color: 'rgba(61,53,48,0.4)',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Compiling LaTeX…
+                  </p>
                 </div>
               </div>
             )}
 
             {pdfUrl ? (
-              <iframe
-                src={pdfUrl}
-                className="w-full h-full border-0"
-                title="Compiled PDF"
-              />
+              <iframe src={pdfUrl} className="w-full h-full border-0" title="Compiled PDF" />
             ) : !compiling ? (
-              <div className="flex flex-col items-center justify-center h-full gap-3 text-gray-300">
-                <span className="text-5xl">📄</span>
-                <p className="text-sm">Click Recompile to preview</p>
+              <div
+                className="flex flex-col items-center justify-center h-full gap-3"
+                style={{ color: 'rgba(61,53,48,0.25)' }}
+              >
+                <span style={{ fontSize: 48 }}>📄</span>
+                <p
+                  style={{
+                    fontFamily: 'DM Mono, monospace',
+                    fontSize: 11,
+                    letterSpacing: 1,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Click Recompile to preview
+                </p>
               </div>
             ) : null}
           </div>
 
-          <div className="px-4 py-2 text-xs text-center text-gray-300 bg-white border-t border-gray-100">
+          <div
+            style={{
+              padding: '6px 14px',
+              background: '#0d0d0d',
+              borderTop: '1px solid rgba(200,169,126,0.08)',
+              fontFamily: 'DM Mono, monospace',
+              fontSize: 9,
+              letterSpacing: 1,
+              textTransform: 'uppercase',
+              textAlign: 'center',
+              color: 'rgba(200,169,126,0.2)',
+            }}
+          >
             Compiled via LaTeX.Online · click Recompile after edits
           </div>
         </div>
