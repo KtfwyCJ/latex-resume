@@ -11,8 +11,8 @@ float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 
 float noise(vec2 p){
   vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);
-  return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),
-             mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);
+  return mix(mix(hash(i),hash(i+vec2(1.,0.)),u.x),
+             mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),u.x),u.y);
 }
 
 float fbm(vec2 p){
@@ -59,9 +59,11 @@ export default function FluidCanvas({ speed = 1 }: Props) {
       return s;
     };
 
+    const vert = mkShader(gl.VERTEX_SHADER, VERT);
+    const frag = mkShader(gl.FRAGMENT_SHADER, FRAG);
     const prog = gl.createProgram()!;
-    gl.attachShader(prog, mkShader(gl.VERTEX_SHADER, VERT));
-    gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, FRAG));
+    gl.attachShader(prog, vert);
+    gl.attachShader(prog, frag);
     gl.linkProgram(prog);
     gl.useProgram(prog);
 
@@ -81,7 +83,7 @@ export default function FluidCanvas({ speed = 1 }: Props) {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-    let rafId: number;
+    let rafId = 0;
     const t0 = performance.now();
 
     const resize = () => {
@@ -111,6 +113,8 @@ export default function FluidCanvas({ speed = 1 }: Props) {
     return () => {
       cancelAnimationFrame(rafId);
       ro.disconnect();
+      gl.deleteShader(vert);
+      gl.deleteShader(frag);
       gl.deleteProgram(prog);
       gl.deleteBuffer(buf);
     };
