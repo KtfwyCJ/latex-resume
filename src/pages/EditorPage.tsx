@@ -49,10 +49,14 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
     };
   }, []);
 
-  const compile = async (latexSource: string) => {
+  const compile = useCallback(async (latexSource: string, signal?: AbortSignal) => {
     setCompiling(true);
     setCompileError('');
     const result = await compileLatex(latexSource);
+    if (signal?.aborted) {
+      if (result.ok && result.pdfUrl) URL.revokeObjectURL(result.pdfUrl);
+      return;
+    }
     setCompiling(false);
     if (result.ok && result.pdfUrl) {
       if (prevPdfUrl.current) URL.revokeObjectURL(prevPdfUrl.current);
@@ -62,12 +66,16 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
       setCompileError(result.error ?? 'Unknown compile error.');
       setErrorOpen(true);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    compile(initialLatex);
-    return () => { if (prevPdfUrl.current) URL.revokeObjectURL(prevPdfUrl.current); };
-  }, []);
+    const ctrl = new AbortController();
+    compile(initialLatex, ctrl.signal);
+    return () => {
+      ctrl.abort();
+      if (prevPdfUrl.current) URL.revokeObjectURL(prevPdfUrl.current);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!hasChanged.current) { hasChanged.current = true; return; }

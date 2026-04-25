@@ -344,23 +344,6 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
 
       {/* ── Paper body ── */}
       <section style={{ background: '#faf8f4', padding: '40px 16px 64px' }}>
-        {error && (
-          <div
-            className="max-w-md mx-auto mb-6"
-            style={{
-              background: 'rgba(255,240,240,0.8)',
-              border: '1px solid rgba(180,60,60,0.25)',
-              borderRadius: 4,
-              padding: '12px 20px',
-              color: '#8b3030',
-              fontSize: 14,
-              fontFamily: '"EB Garamond", serif',
-              textAlign: 'center',
-            }}
-          >
-            {error}
-          </div>
-        )}
         <div
           className="max-w-md mx-auto"
           style={{

@@ -45,6 +45,8 @@ interface Props {
 
 export default function FluidCanvas({ speed = 1 }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const speedRef = useRef(speed);
+  useEffect(() => { speedRef.current = speed; }, [speed]);
 
   useEffect(() => {
     const canvas = ref.current;
@@ -100,7 +102,7 @@ export default function FluidCanvas({ speed = 1 }: Props) {
     resize();
 
     const draw = (now: number) => {
-      const t = ((now - t0) / 1000) * speed;
+      const t = ((now - t0) / 1000) * speedRef.current;
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform1f(uTime, t);
@@ -113,12 +115,14 @@ export default function FluidCanvas({ speed = 1 }: Props) {
     return () => {
       cancelAnimationFrame(rafId);
       ro.disconnect();
+      gl.detachShader(prog, vert);
+      gl.detachShader(prog, frag);
       gl.deleteShader(vert);
       gl.deleteShader(frag);
       gl.deleteProgram(prog);
       gl.deleteBuffer(buf);
     };
-  }, [speed]);
+  }, []);
 
   return (
     <canvas
