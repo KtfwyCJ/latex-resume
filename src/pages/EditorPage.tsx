@@ -8,6 +8,8 @@ interface Props {
   onBack: () => void;
 }
 
+const mono = "'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace";
+
 export default function EditorPage({ initialLatex, onBack }: Props) {
   const [source, setSource] = useState(initialLatex);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -100,28 +102,27 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
   const copyTex = () => navigator.clipboard.writeText(source);
 
   const ghostBtn: React.CSSProperties = {
-    fontFamily: 'DM Mono, monospace',
-    fontSize: 9,
-    letterSpacing: '1.5px',
-    textTransform: 'uppercase',
+    fontFamily: mono,
+    fontSize: 11,
+    letterSpacing: '1px',
     padding: '5px 12px',
-    background: 'rgba(245,240,232,0.07)',
-    color: 'rgba(245,240,232,0.5)',
-    border: '1px solid rgba(245,240,232,0.12)',
-    borderRadius: 2,
+    background: 'transparent',
+    color: '#646262',
+    border: '1px solid rgba(15,0,0,0.15)',
+    borderRadius: 4,
     cursor: 'pointer',
   };
 
   const solidBtn: React.CSSProperties = {
     ...ghostBtn,
-    background: '#c8a97e',
-    color: '#0a0806',
-    border: '1px solid #c8a97e',
+    background: '#201d1d',
+    color: '#fdfcfc',
+    border: '1px solid #201d1d',
   };
 
   const paneHeader: React.CSSProperties = {
-    background: '#161616',
-    borderBottom: '1px solid rgba(200,169,126,0.1)',
+    background: '#fdfcfc',
+    borderBottom: '1px solid rgba(15,0,0,0.12)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -130,53 +131,30 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
   };
 
   const paneLabel: React.CSSProperties = {
-    fontFamily: 'DM Mono, monospace',
+    fontFamily: mono,
     fontSize: 9,
     letterSpacing: '2px',
     textTransform: 'uppercase',
-    color: 'rgba(200,169,126,0.4)',
+    color: '#9a9898',
   };
 
   return (
-    <div className="flex flex-col h-screen" style={{ background: '#0d0d0d' }}>
+    <div className="flex flex-col h-screen" style={{ background: '#fdfcfc' }}>
       {/* Top bar */}
       <header
         className="flex items-center justify-between flex-shrink-0"
-        style={{
-          padding: '0 20px',
-          height: 46,
-          background: '#0d0d0d',
-          borderBottom: '1px solid rgba(200,169,126,0.15)',
-        }}
+        style={{ padding: '0 20px', height: 46, background: '#fdfcfc', borderBottom: '1px solid rgba(15,0,0,0.12)' }}
       >
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            style={{
-              fontFamily: 'DM Mono, monospace',
-              fontSize: 9,
-              letterSpacing: '1.5px',
-              textTransform: 'uppercase',
-              color: 'rgba(245,240,232,0.35)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-            }}
+            style={{ fontFamily: mono, fontSize: 11, letterSpacing: '1px', color: '#646262', background: 'none', border: 'none', cursor: 'pointer' }}
           >
             ← Back
           </button>
-          <span style={{ color: 'rgba(200,169,126,0.2)', fontSize: 12 }}>|</span>
-          <span
-            style={{
-              fontFamily: '"Playfair Display", Georgia, serif',
-              fontSize: 16,
-              fontWeight: 700,
-              color: '#f5f0e8',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            LaTeX{' '}
-            <em style={{ color: '#c8a97e', fontStyle: 'italic' }}>Resume Builder</em>
+          <span style={{ color: 'rgba(15,0,0,0.15)', fontSize: 12 }}>|</span>
+          <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 700, color: '#201d1d', letterSpacing: '-0.02em' }}>
+            latex-resume
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -217,7 +195,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
               defaultLanguage="latex"
               value={source}
               onChange={(val) => setSource(val ?? '')}
-              theme="vs-dark"
+              theme="vs"
               options={{
                 fontSize: 13,
                 lineNumbers: 'on',
@@ -225,7 +203,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
                 wordWrap: 'on',
                 scrollBeyondLastLine: false,
                 padding: { top: 12, bottom: 12 },
-                fontFamily: "'Fira Code', 'Cascadia Code', monospace",
+                fontFamily: "'JetBrains Mono', monospace",
                 renderLineHighlight: 'line',
               }}
             />
@@ -233,43 +211,17 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
 
           {/* Compile error panel */}
           {compileError && (
-            <div
-              style={{
-                borderTop: '1px solid rgba(200,80,80,0.3)',
-                background: '#1a0f0f',
-                flexShrink: 0,
-              }}
-            >
+            <div style={{ borderTop: '1px solid rgba(255,59,48,0.25)', background: '#fff8f8', flexShrink: 0 }}>
               <button
                 onClick={() => setErrorOpen((o) => !o)}
                 className="flex items-center justify-between w-full"
-                style={{
-                  padding: '8px 16px',
-                  fontFamily: 'DM Mono, monospace',
-                  fontSize: 10,
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  color: 'rgba(220,80,80,0.7)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
+                style={{ padding: '8px 16px', fontFamily: mono, fontSize: 11, fontWeight: 500, color: '#ff3b30', background: 'none', border: 'none', cursor: 'pointer' }}
               >
-                <span>⚠ Compile error</span>
+                <span>[x] Compile error</span>
                 <span>{errorOpen ? '▲' : '▼'}</span>
               </button>
               {errorOpen && (
-                <pre
-                  style={{
-                    padding: '0 16px 12px',
-                    fontFamily: 'DM Mono, monospace',
-                    fontSize: 11,
-                    color: 'rgba(220,80,80,0.6)',
-                    whiteSpace: 'pre-wrap',
-                    overflowY: 'auto',
-                    maxHeight: 160,
-                  }}
-                >
+                <pre style={{ padding: '0 16px 12px', fontFamily: mono, fontSize: 11, color: 'rgba(255,59,48,0.6)', whiteSpace: 'pre-wrap', overflowY: 'auto', maxHeight: 160 }}>
                   {compileError}
                 </pre>
               )}
@@ -280,49 +232,23 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
         {/* Draggable divider */}
         <div
           onMouseDown={onDividerMouseDown}
-          style={{
-            width: 3,
-            flexShrink: 0,
-            background: 'rgba(200,169,126,0.15)',
-            cursor: 'col-resize',
-            transition: 'background 0.15s',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(200,169,126,0.4)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(200,169,126,0.15)'; }}
+          style={{ width: 1, flexShrink: 0, background: 'rgba(15,0,0,0.1)', cursor: 'col-resize', transition: 'background 0.15s' }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(15,0,0,0.25)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(15,0,0,0.1)'; }}
         />
 
         {/* Right: PDF preview */}
         <div className="flex flex-col overflow-hidden" style={{ width: `${100 - splitPct}%` }}>
-          <div
-            style={{
-              ...paneHeader,
-              background: '#0d0d0d',
-              borderBottom: '1px solid rgba(200,169,126,0.1)',
-            }}
-          >
+          <div style={paneHeader}>
             <span style={paneLabel}>PDF Preview</span>
           </div>
 
-          <div className="relative flex-1" style={{ background: '#faf8f4' }}>
+          <div className="relative flex-1" style={{ background: '#f1eeee' }}>
             {compiling && (
-              <div
-                className="absolute inset-0 z-10 flex items-center justify-center"
-                style={{ background: '#faf8f4' }}
-              >
+              <div className="absolute inset-0 z-10 flex items-center justify-center" style={{ background: '#f1eeee' }}>
                 <div className="flex flex-col items-center gap-3">
-                  <div
-                    className="w-8 h-8 border-4 rounded-full animate-spin"
-                    style={{ borderColor: 'rgba(61,53,48,0.15)', borderTopColor: '#c8a97e' }}
-                  />
-                  <p
-                    style={{
-                      fontFamily: 'DM Mono, monospace',
-                      fontSize: 11,
-                      letterSpacing: 1,
-                      color: 'rgba(61,53,48,0.4)',
-                      textTransform: 'uppercase',
-                    }}
-                  >
+                  <div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: 'rgba(15,0,0,0.1)', borderTopColor: '#201d1d' }} />
+                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: 1, color: '#9a9898', textTransform: 'uppercase' }}>
                     Compiling LaTeX…
                   </p>
                 </div>
@@ -332,38 +258,16 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
             {pdfUrl ? (
               <iframe src={pdfUrl} className="w-full h-full border-0" title="Compiled PDF" />
             ) : !compiling ? (
-              <div
-                className="flex flex-col items-center justify-center h-full gap-3"
-                style={{ color: 'rgba(61,53,48,0.25)' }}
-              >
-                <span style={{ fontSize: 48 }}>📄</span>
-                <p
-                  style={{
-                    fontFamily: 'DM Mono, monospace',
-                    fontSize: 11,
-                    letterSpacing: 1,
-                    textTransform: 'uppercase',
-                  }}
-                >
+              <div className="flex flex-col items-center justify-center h-full gap-2">
+                <span style={{ fontFamily: mono, fontSize: 13, color: '#c4c2c2' }}>[ no preview ]</span>
+                <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', color: '#c4c2c2' }}>
                   Click Recompile to preview
                 </p>
               </div>
             ) : null}
           </div>
 
-          <div
-            style={{
-              padding: '6px 14px',
-              background: '#0d0d0d',
-              borderTop: '1px solid rgba(200,169,126,0.08)',
-              fontFamily: 'DM Mono, monospace',
-              fontSize: 9,
-              letterSpacing: 1,
-              textTransform: 'uppercase',
-              textAlign: 'center',
-              color: 'rgba(200,169,126,0.2)',
-            }}
-          >
+          <div style={{ padding: '6px 14px', background: '#fdfcfc', borderTop: '1px solid rgba(15,0,0,0.08)', fontFamily: mono, fontSize: 9, letterSpacing: 1, textTransform: 'uppercase', textAlign: 'center', color: '#9a9898' }}>
             Compiled via LaTeX.Online · click Recompile after edits
           </div>
         </div>
