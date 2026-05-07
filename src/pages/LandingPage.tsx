@@ -264,7 +264,7 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
             </span>
           </div>
           {error && (
-            <p style={{ marginTop: 12, fontFamily: mono, fontSize: 12, color: '#ff3b30' }}>
+            <p role="alert" style={{ marginTop: 12, fontFamily: mono, fontSize: 12, color: '#ff3b30' }}>
               [x] {error}
             </p>
           )}
