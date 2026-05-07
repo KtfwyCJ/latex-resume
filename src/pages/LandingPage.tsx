@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { renderPagesAsImages } from '../lib/pdfParser';
 import { clearResume, loadResume } from '../lib/resumeStorage';
 import type { Draft } from '../lib/resumeStorage';
-import FluidCanvas from '../components/FluidCanvas';
 
 async function renderFirstPage(file: File): Promise<string> {
   const [img] = await renderPagesAsImages(file, 1);
@@ -26,6 +25,34 @@ function draftAge(savedAt: number): string {
   const days = Math.floor((Date.now() - savedAt) / 86_400_000);
   return days < 1 ? 'today' : `${days} day${days === 1 ? '' : 's'} ago`;
 }
+
+const mono = "'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace";
+
+const primaryBtn: React.CSSProperties = {
+  fontFamily: mono,
+  fontSize: 12,
+  fontWeight: 500,
+  padding: '10px 22px',
+  background: '#201d1d',
+  color: '#fdfcfc',
+  border: 'none',
+  borderRadius: 4,
+  cursor: 'pointer',
+  letterSpacing: '0.5px',
+};
+
+const ghostBtn: React.CSSProperties = {
+  fontFamily: mono,
+  fontSize: 12,
+  fontWeight: 500,
+  padding: '10px 22px',
+  background: 'transparent',
+  color: '#201d1d',
+  border: '1px solid rgba(15,0,0,0.2)',
+  borderRadius: 4,
+  cursor: 'pointer',
+  letterSpacing: '0.5px',
+};
 
 export default function LandingPage({ onParsed, onOpenGallery }: Props) {
   const [isDragging, setIsDragging] = useState(false);
@@ -96,462 +123,218 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
   };
 
   return (
-    <div style={{ background: '#080808' }}>
+    <div style={{ background: '#fdfcfc', minHeight: '100vh' }}>
+
       {/* Draft banner */}
       {draft && (
-        <div
-          className="fixed top-0 inset-x-0 z-40 flex items-center justify-between gap-3 px-5 py-2.5 text-sm"
-          style={{
-            background: 'rgba(200,169,126,0.1)',
-            borderBottom: '1px solid rgba(200,169,126,0.2)',
-            backdropFilter: 'blur(8px)',
-          }}
-        >
-          <span style={{ fontFamily: '"EB Garamond", serif', color: 'rgba(245,240,232,0.75)' }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '8px 20px',
+          background: '#fdfcfc',
+          borderBottom: '1px solid rgba(15,0,0,0.12)',
+          fontFamily: mono, fontSize: 12, color: '#424245',
+        }}>
+          <span>
             You have changes saved {draftAge(draft.savedAt)} —{' '}
             <button
               onClick={() => onParsed(draft.latex)}
-              style={{
-                color: '#c8a97e',
-                fontFamily: '"EB Garamond", serif',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                textDecoration: 'underline',
-                textUnderlineOffset: 3,
-                fontStyle: 'italic',
-                fontSize: 'inherit',
-              }}
+              style={{ color: '#201d1d', fontFamily: mono, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 2, fontSize: 12 }}
             >
               Resume editing →
             </button>
           </span>
           <button
             onClick={() => { clearResume(); setDraft(null); }}
-            aria-label="Dismiss"
-            style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, lineHeight: 1 }}
+            style={{ color: '#9a9898', background: 'none', border: 'none', cursor: 'pointer', fontFamily: mono, fontSize: 12 }}
           >
-            ✕
+            [-] dismiss
           </button>
         </div>
       )}
 
-      {/* ── Hero (ink-black) ── */}
-      <section
-        className="relative flex flex-col items-center justify-center overflow-hidden"
-        style={{ minHeight: '100vh', background: '#080808', padding: '80px 16px' }}
-      >
-        <FluidCanvas speed={0.5} />
+      {/* Nav */}
+      <nav style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '10px 24px',
+        borderBottom: '1px solid rgba(15,0,0,0.12)',
+        background: '#fdfcfc',
+        position: 'sticky', top: 0, zIndex: 30,
+      }}>
+        <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: '#201d1d', letterSpacing: '-0.02em' }}>
+          latex-resume
+        </span>
+        <div style={{ display: 'flex', gap: 20 }}>
+          <button
+            onClick={onOpenGallery}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: mono, fontSize: 12, color: '#646262' }}
+          >
+            Templates
+          </button>
+          <button
+            onClick={() => inputRef.current?.click()}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: mono, fontSize: 12, color: '#646262' }}
+          >
+            Import
+          </button>
+        </div>
+      </nav>
 
-        <p
-          className="relative z-10 mb-5"
-          style={{
-            fontFamily: 'DM Mono, monospace',
-            fontSize: 10,
-            letterSpacing: 4,
-            textTransform: 'uppercase',
-            color: 'rgba(210,185,140,0.5)',
-          }}
-        >
+      {/* Hero */}
+      <section style={{ padding: '96px 24px 72px', textAlign: 'center', borderBottom: '1px solid rgba(15,0,0,0.12)' }}>
+        <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: '#646262', marginBottom: 20 }}>
           LaTeX Resume Builder
         </p>
-
-        <h1
-          className="relative z-10 text-center mb-4"
-          style={{
-            fontFamily: '"Playfair Display", Georgia, serif',
-            fontSize: 'clamp(42px, 7vw, 72px)',
-            fontWeight: 900,
-            lineHeight: 1.05,
-            color: '#f5f0e8',
-            letterSpacing: '-0.02em',
-          }}
-        >
-          Craft Your
-          <br />
-          <em style={{ color: '#c8a97e', fontStyle: 'italic' }}>Professional</em>
-          <br />
-          Story
+        <h1 style={{ fontFamily: mono, fontSize: 'clamp(28px, 5vw, 38px)', fontWeight: 700, lineHeight: 1.25, color: '#201d1d', letterSpacing: '-0.02em', marginBottom: 16 }}>
+          Professional resumes,<br />written in LaTeX.
         </h1>
-
-        <p
-          className="relative z-10 text-center mb-10"
-          style={{
-            fontFamily: '"EB Garamond", Georgia, serif',
-            fontSize: 18,
-            fontStyle: 'italic',
-            lineHeight: 1.65,
-            color: 'rgba(245,240,232,0.55)',
-            maxWidth: 420,
-          }}
-        >
-          Professional templates, live LaTeX editor, instant PDF —
-          <br />
-          or import your existing resume.
+        <p style={{ fontFamily: mono, fontSize: 14, lineHeight: 1.6, color: '#424245', maxWidth: 440, margin: '0 auto 32px' }}>
+          Live editor, instant PDF preview, and AI-powered import from your existing resume.
         </p>
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <button onClick={onOpenGallery} style={primaryBtn}>[+] Browse Templates</button>
+          <button onClick={() => inputRef.current?.click()} style={ghostBtn}>Import PDF →</button>
+        </div>
+        {error && (
+          <p style={{ marginTop: 16, fontFamily: mono, fontSize: 12, color: '#ff3b30' }}>
+            [x] {error}
+          </p>
+        )}
+      </section>
 
-        {/* CTA group */}
-        <div className="relative z-10 w-full" style={{ maxWidth: 420 }}>
-          {/* Template card */}
-          <div
-            style={{
-              background: 'rgba(245,240,232,0.06)',
-              border: '1px solid rgba(245,240,232,0.12)',
-              borderRadius: 4,
-              padding: '24px 28px',
-              marginBottom: 16,
-            }}
-          >
-            <div className="flex flex-wrap gap-1.5 mb-3">
-              {['Modern', 'Classic', 'Minimal', 'Sidebar', 'Executive'].map((n) => (
-                <span
-                  key={n}
-                  style={{
-                    fontFamily: 'DM Mono, monospace',
-                    fontSize: 9,
-                    letterSpacing: '1.5px',
-                    textTransform: 'uppercase',
-                    color: 'rgba(200,169,126,0.7)',
-                    background: 'rgba(200,169,126,0.1)',
-                    border: '1px solid rgba(200,169,126,0.2)',
-                    padding: '3px 8px',
-                  }}
-                >
-                  {n}
-                </span>
-              ))}
-            </div>
-            <h2
-              style={{
-                fontFamily: '"Playfair Display", serif',
-                fontSize: 20,
-                fontWeight: 700,
-                color: '#f5f0e8',
-                marginBottom: 6,
-              }}
-            >
-              Start from a Template
-            </h2>
-            <p
-              style={{
-                fontFamily: '"EB Garamond", serif',
-                fontStyle: 'italic',
-                fontSize: 14,
-                lineHeight: 1.5,
-                color: 'rgba(245,240,232,0.45)',
-                marginBottom: 16,
-              }}
-            >
-              10+ professional designs, live LaTeX editor, instant PDF preview.
-            </p>
-            <button
-              onClick={onOpenGallery}
-              style={{
-                display: 'block',
-                width: '100%',
-                padding: '12px 20px',
-                background: '#c8a97e',
-                color: '#0a0806',
-                fontFamily: 'DM Mono, monospace',
-                fontSize: 11,
-                letterSpacing: 2,
-                textTransform: 'uppercase',
-                border: 'none',
-                cursor: 'pointer',
-                borderRadius: 2,
-              }}
-            >
-              Browse Templates →
-            </button>
+      {/* Templates section */}
+      <section style={{ padding: '64px 24px', borderBottom: '1px solid rgba(15,0,0,0.12)' }}>
+        <div style={{ maxWidth: 480, margin: '0 auto' }}>
+          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: '#9a9898', marginBottom: 16 }}>
+            Templates
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
+            {['Modern', 'Classic', 'Minimal', 'Two Column', 'Executive'].map((n) => (
+              <span
+                key={n}
+                style={{ fontFamily: mono, fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', color: '#424245', border: '1px solid rgba(15,0,0,0.15)', padding: '2px 8px', borderRadius: 2 }}
+              >
+                {n}
+              </span>
+            ))}
           </div>
+          <h2 style={{ fontFamily: mono, fontSize: 16, fontWeight: 700, color: '#201d1d', marginBottom: 8 }}>
+            Start from a template
+          </h2>
+          <p style={{ fontFamily: mono, fontSize: 14, lineHeight: 1.6, color: '#424245', marginBottom: 20 }}>
+            10+ professional designs. Open in the live editor and customize every detail.
+          </p>
+          <button onClick={onOpenGallery} style={primaryBtn}>[+] Browse Templates →</button>
+        </div>
+      </section>
 
-          {/* Divider */}
-          <div className="flex items-center gap-3 mb-4">
-            <div style={{ flex: 1, height: 1, background: 'rgba(245,240,232,0.12)' }} />
-            <span
-              style={{
-                fontFamily: 'DM Mono, monospace',
-                fontSize: 9,
-                letterSpacing: 2,
-                color: 'rgba(245,240,232,0.25)',
-                textTransform: 'uppercase',
-              }}
-            >
-              or import your PDF
-            </span>
-            <div style={{ flex: 1, height: 1, background: 'rgba(245,240,232,0.12)' }} />
+      {/* Import section */}
+      <section style={{ padding: '64px 24px' }}>
+        <div style={{ maxWidth: 480, margin: '0 auto' }}>
+          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: '#9a9898', marginBottom: 16 }}>
+            Import
+          </p>
+          <h2 style={{ fontFamily: mono, fontSize: 16, fontWeight: 700, color: '#201d1d', marginBottom: 8 }}>
+            Import your résumé
+          </h2>
+          <p style={{ fontFamily: mono, fontSize: 14, lineHeight: 1.6, color: '#424245', marginBottom: 20 }}>
+            Drop a PDF and Claude AI converts it to editable LaTeX source.
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+            <div style={{ flex: 1, height: 1, background: 'rgba(15,0,0,0.1)' }} />
+            <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: '#9a9898' }}>or drop a PDF</span>
+            <div style={{ flex: 1, height: 1, background: 'rgba(15,0,0,0.1)' }} />
           </div>
-
-          {/* Drop zone */}
           <div
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
             onDrop={onDrop}
             onClick={() => inputRef.current?.click()}
             style={{
-              border: `1px dashed ${isDragging ? 'rgba(200,169,126,0.6)' : 'rgba(245,240,232,0.15)'}`,
+              border: `1px dashed ${isDragging ? 'rgba(15,0,0,0.4)' : 'rgba(15,0,0,0.2)'}`,
               borderRadius: 4,
-              padding: '18px 24px',
+              padding: '24px',
               textAlign: 'center',
               cursor: 'pointer',
-              background: isDragging ? 'rgba(200,169,126,0.06)' : 'transparent',
-              transition: 'border-color 0.2s, background 0.2s',
+              background: isDragging ? '#f8f7f7' : 'transparent',
+              transition: 'border-color 0.15s, background 0.15s',
               userSelect: 'none',
             }}
           >
-            <p
-              style={{
-                fontFamily: 'DM Mono, monospace',
-                fontSize: 10,
-                letterSpacing: '1.5px',
-                textTransform: 'uppercase',
-                color: 'rgba(245,240,232,0.3)',
-                marginBottom: 4,
-                pointerEvents: 'none',
-              }}
-            >
+            <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: '#9a9898', marginBottom: 4, pointerEvents: 'none' }}>
               {isDragging ? 'Release to upload' : 'Drop your PDF here'}
             </p>
-            <span style={{ fontFamily: 'DM Mono, monospace', fontSize: 11, color: 'rgba(245,240,232,0.18)', pointerEvents: 'none' }}>
-              PDF only · Max 10 MB
+            <span style={{ fontFamily: mono, fontSize: 11, color: '#c4c2c2', pointerEvents: 'none' }}>
+              PDF only · max 10 MB
             </span>
           </div>
-
-          {/* Inline error — visible without scrolling */}
-          {error && (
-            <div
-              style={{
-                marginTop: 12,
-                padding: '10px 16px',
-                background: 'rgba(180,60,60,0.15)',
-                border: '1px solid rgba(200,80,80,0.3)',
-                borderRadius: 4,
-                color: 'rgba(255,180,180,0.9)',
-                fontFamily: 'DM Mono, monospace',
-                fontSize: 10,
-                letterSpacing: '1px',
-                textAlign: 'center',
-              }}
-            >
-              {error}
-            </div>
-          )}
         </div>
       </section>
 
-      {/* ── Paper transition ── */}
-      <div style={{ height: 60, background: 'linear-gradient(to bottom, #080808, #faf8f4)' }} />
-
-      {/* ── Paper body ── */}
-      <section style={{ background: '#faf8f4', padding: '40px 16px 64px' }}>
-        <div
-          className="max-w-md mx-auto"
-          style={{
-            background: '#fff',
-            border: '1px solid rgba(61,53,48,0.18)',
-            borderRadius: 2,
-            padding: '32px 28px',
-            textAlign: 'center',
-            boxShadow: '0 2px 12px rgba(61,53,48,0.06)',
-          }}
-        >
-          <h4
-            style={{
-              fontFamily: '"Playfair Display", serif',
-              fontSize: 20,
-              fontWeight: 700,
-              color: '#1a1614',
-              marginBottom: 6,
-            }}
-          >
-            Import Your Résumé
-          </h4>
-          <p
-            style={{
-              fontFamily: '"EB Garamond", serif',
-              fontStyle: 'italic',
-              fontSize: 15,
-              lineHeight: 1.5,
-              color: '#7a6f6a',
-              marginBottom: 20,
-            }}
-          >
-            Drop a PDF and we'll convert it to editable LaTeX
-          </p>
-          <button
-            onClick={() => inputRef.current?.click()}
-            style={{
-              padding: '10px 24px',
-              border: '1px solid #3d3530',
-              color: '#3d3530',
-              fontFamily: 'DM Mono, monospace',
-              fontSize: 10,
-              letterSpacing: 2,
-              textTransform: 'uppercase',
-              background: 'transparent',
-              cursor: 'pointer',
-              borderRadius: 1,
-            }}
-          >
-            Browse File
-          </button>
-        </div>
-      </section>
-
-      {/* Hidden file input — shared between drop zone and paper button */}
+      {/* Hidden file input */}
       <input
         ref={inputRef}
         type="file"
         accept="application/pdf"
-        className="hidden"
+        style={{ display: 'none' }}
         onChange={onFileChange}
       />
 
-      {/* ── Preview modal ── */}
+      {/* Preview modal */}
       {previewFile && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center px-4"
-          style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)' }}
-        >
-          <div
-            style={{
-              background: '#fff',
-              borderRadius: 4,
-              border: '1px solid rgba(61,53,48,0.12)',
-              boxShadow: '0 24px 80px rgba(0,0,0,0.4)',
-              maxWidth: 520,
-              width: '100%',
-              overflow: 'hidden',
-            }}
-          >
+        <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 16px', background: 'rgba(0,0,0,0.5)' }}>
+          <div style={{ background: '#fdfcfc', borderRadius: 4, border: '1px solid rgba(15,0,0,0.12)', maxWidth: 520, width: '100%', overflow: 'hidden' }}>
+
             {/* Modal header */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '16px 20px',
-                borderBottom: '1px solid rgba(61,53,48,0.1)',
-              }}
-            >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid rgba(15,0,0,0.12)' }}>
               <div>
-                <p
-                  style={{
-                    fontFamily: '"Playfair Display", serif',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: '#1a1614',
-                    maxWidth: 280,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
+                <p style={{ fontFamily: mono, fontSize: 14, fontWeight: 700, color: '#201d1d', maxWidth: 280, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {previewFile.name}
                 </p>
-                <p style={{ fontFamily: 'DM Mono, monospace', fontSize: 11, color: '#7a6f6a', marginTop: 2 }}>
+                <p style={{ fontFamily: mono, fontSize: 11, color: '#9a9898', marginTop: 2 }}>
                   {formatSize(previewFile.size)}
                 </p>
               </div>
               <button
                 onClick={cancelPreview}
-                style={{ color: '#7a6f6a', fontSize: 18, background: 'none', border: 'none', cursor: 'pointer', lineHeight: 1 }}
+                style={{ color: '#9a9898', background: 'none', border: 'none', cursor: 'pointer', fontFamily: mono, fontSize: 12 }}
               >
-                ✕
+                [x]
               </button>
             </div>
 
             {/* PDF thumbnail */}
-            <div
-              style={{
-                background: '#faf8f4',
-                padding: 20,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: 260,
-              }}
-            >
+            <div style={{ background: '#f1eeee', padding: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 260 }}>
               {previewImg ? (
                 <img
                   src={`data:image/png;base64,${previewImg}`}
                   alt="Resume preview"
-                  style={{
-                    maxHeight: 256,
-                    objectFit: 'contain',
-                    border: '1px solid rgba(61,53,48,0.12)',
-                    borderRadius: 2,
-                    boxShadow: '0 2px 8px rgba(61,53,48,0.08)',
-                  }}
+                  style={{ maxHeight: 256, objectFit: 'contain', border: '1px solid rgba(15,0,0,0.12)', borderRadius: 2 }}
                 />
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-                  <div
-                    className="w-6 h-6 border-2 rounded-full animate-spin"
-                    style={{ borderColor: 'rgba(61,53,48,0.15)', borderTopColor: '#c8a97e' }}
-                  />
-                  <span style={{ fontFamily: 'DM Mono, monospace', fontSize: 11, color: 'rgba(61,53,48,0.35)', letterSpacing: 1 }}>
-                    Loading preview…
-                  </span>
+                  <div className="w-6 h-6 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(15,0,0,0.1)', borderTopColor: '#201d1d' }} />
+                  <span style={{ fontFamily: mono, fontSize: 11, color: '#9a9898', letterSpacing: 1 }}>Loading preview…</span>
                 </div>
               )}
             </div>
 
             {/* Actions */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                gap: 10,
-                padding: '14px 20px',
-                borderTop: '1px solid rgba(61,53,48,0.1)',
-              }}
-            >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 10, padding: '14px 20px', borderTop: '1px solid rgba(15,0,0,0.12)' }}>
               <button
                 onClick={cancelPreview}
                 disabled={loading}
-                style={{
-                  padding: '8px 16px',
-                  fontFamily: 'DM Mono, monospace',
-                  fontSize: 10,
-                  letterSpacing: 1.5,
-                  textTransform: 'uppercase',
-                  color: '#7a6f6a',
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  opacity: loading ? 0.5 : 1,
-                }}
+                style={{ padding: '8px 16px', fontFamily: mono, fontSize: 11, letterSpacing: 1, color: '#646262', background: 'transparent', border: 'none', cursor: 'pointer', opacity: loading ? 0.5 : 1 }}
               >
                 Cancel
               </button>
               <button
                 onClick={confirmConvert}
                 disabled={loading}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '10px 20px',
-                  background: '#c8a97e',
-                  color: '#0a0806',
-                  fontFamily: 'DM Mono, monospace',
-                  fontSize: 10,
-                  letterSpacing: 1.5,
-                  textTransform: 'uppercase',
-                  border: 'none',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  borderRadius: 2,
-                  opacity: loading ? 0.6 : 1,
-                }}
+                style={{ ...primaryBtn, display: 'flex', alignItems: 'center', gap: 8, opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
               >
                 {loading ? (
                   <>
-                    <span
-                      className="w-3 h-3 border-2 rounded-full animate-spin"
-                      style={{ borderColor: 'rgba(10,8,6,0.3)', borderTopColor: '#0a0806' }}
-                    />
+                    <span className="w-3 h-3 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(253,252,252,0.3)', borderTopColor: '#fdfcfc' }} />
                     Converting…
                   </>
                 ) : (
@@ -561,17 +344,7 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
             </div>
 
             {loading && (
-              <p
-                className="animate-pulse"
-                style={{
-                  paddingBottom: 14,
-                  textAlign: 'center',
-                  fontFamily: '"EB Garamond", serif',
-                  fontStyle: 'italic',
-                  fontSize: 13,
-                  color: '#c8a97e',
-                }}
-              >
+              <p style={{ paddingBottom: 14, textAlign: 'center', fontFamily: mono, fontSize: 13, color: '#646262' }}>
                 AI is analyzing your resume… this may take 15–30 seconds.
               </p>
             )}
