@@ -13,6 +13,8 @@ interface CardProps {
   onSelect: (latex: string) => void;
 }
 
+const mono = "'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace";
+
 function TemplateCard({ template, onSelect }: CardProps) {
   const [thumb, setThumb] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -43,38 +45,48 @@ function TemplateCard({ template, onSelect }: CardProps) {
 
   return (
     <div
-      className="flex flex-col overflow-hidden transition-all duration-200 bg-white border border-gray-100 shadow-sm cursor-pointer group rounded-2xl hover:shadow-lg hover:border-primary"
+      style={{
+        display: 'flex', flexDirection: 'column', overflow: 'hidden',
+        border: '1px solid rgba(15,0,0,0.12)',
+        borderRadius: 4,
+        cursor: 'pointer',
+        background: '#fdfcfc',
+        transition: 'border-color 0.15s',
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(15,0,0,0.3)'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(15,0,0,0.12)'; }}
       onClick={() => onSelect(template.latex)}
     >
       {/* Thumbnail */}
-      <div className="flex items-center justify-center overflow-hidden bg-gray-50" style={{ height: '340px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', background: '#f1eeee', height: 340 }}>
         {loading && (
-          <div className="flex flex-col items-center gap-3 text-gray-300">
-            <div className="w-6 h-6 border-2 border-gray-200 rounded-full border-t-primary animate-spin" />
-            <span className="text-xs">Rendering preview…</span>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+            <div className="w-6 h-6 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(15,0,0,0.1)', borderTopColor: '#201d1d' }} />
+            <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', color: '#9a9898' }}>Rendering…</span>
           </div>
         )}
         {!loading && thumb && (
-          <img
-            src={`data:image/png;base64,${thumb}`}
-            alt={`${template.name} preview`}
-            className="object-contain w-auto h-full"
-          />
+          <img src={`data:image/png;base64,${thumb}`} alt={`${template.name} preview`} style={{ objectFit: 'contain', width: 'auto', height: '100%' }} />
         )}
         {!loading && failed && (
-          <div className="px-6 text-xs text-center text-gray-300">Preview unavailable</div>
+          <span style={{ fontFamily: mono, fontSize: 11, color: '#9a9898', padding: '0 24px', textAlign: 'center' }}>Preview unavailable</span>
         )}
       </div>
 
       {/* Info */}
-      <div className="p-5 border-t border-gray-100">
-        <p className="mb-1 font-bold text-gray-800">{template.name}</p>
-        <p className="mb-4 text-sm leading-relaxed text-gray-400">{template.description}</p>
-        <button className="
-          w-full py-3.5 rounded-xl bg-primary text-white font-bold text-sm tracking-wide
-              shadow-lg hover:bg-primary/90 transition-colors duration-200
-        ">
-          Use this template
+      <div style={{ padding: 20, borderTop: '1px solid rgba(15,0,0,0.08)' }}>
+        <p style={{ fontFamily: mono, fontSize: 14, fontWeight: 700, color: '#201d1d', marginBottom: 6 }}>{template.name}</p>
+        <p style={{ fontFamily: mono, fontSize: 12, lineHeight: 1.6, color: '#646262', marginBottom: 16 }}>{template.description}</p>
+        <button
+          style={{
+            width: '100%', padding: '10px 0',
+            background: '#201d1d', color: '#fdfcfc',
+            border: 'none', borderRadius: 4,
+            fontFamily: mono, fontSize: 12, fontWeight: 500, letterSpacing: '0.5px',
+            cursor: 'pointer',
+          }}
+        >
+          [+] Use this template
         </button>
       </div>
     </div>
@@ -83,34 +95,44 @@ function TemplateCard({ template, onSelect }: CardProps) {
 
 export default function TemplateGallery({ templates, onSelect, onBack }: Props) {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div style={{ minHeight: '100vh', background: '#fdfcfc' }}>
       {/* Header */}
-      <header className="sticky top-0 z-10 flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm">
-        <div className="flex items-center gap-3">
+      <header style={{
+        position: 'sticky', top: 0, zIndex: 10,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '10px 32px',
+        background: '#fdfcfc',
+        borderBottom: '1px solid rgba(15,0,0,0.12)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button
             onClick={onBack}
-            className="flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-primary"
+            style={{ fontFamily: mono, fontSize: 12, color: '#646262', background: 'none', border: 'none', cursor: 'pointer' }}
           >
             ← Back
           </button>
-          <span className="text-gray-200">|</span>
-          <span className="font-bold tracking-tight text-gray-800">
-            LaTeX{' '}
-            <span className="text-transparent bg-gradient-to-r from-sky-600 to-teal-500 bg-clip-text">
-              Resume Builder
-            </span>
+          <span style={{ color: 'rgba(15,0,0,0.15)', fontSize: 12 }}>|</span>
+          <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: '#201d1d', letterSpacing: '-0.02em' }}>
+            latex-resume
           </span>
         </div>
       </header>
 
       {/* Content */}
-      <div className="flex-1 w-full max-w-6xl px-8 py-10 mx-auto">
-        <div className="mb-8">
-          <h2 className="mb-2 text-3xl font-extrabold text-gray-900">Sample Templates</h2>
-          <p className="text-gray-500">Choose a template to open it in the editor — fully editable.</p>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 32px' }}>
+        <div style={{ marginBottom: 40 }}>
+          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: '#9a9898', marginBottom: 10 }}>
+            Templates
+          </p>
+          <h2 style={{ fontFamily: mono, fontSize: 24, fontWeight: 700, color: '#201d1d', marginBottom: 8, letterSpacing: '-0.02em' }}>
+            Sample Templates
+          </h2>
+          <p style={{ fontFamily: mono, fontSize: 14, color: '#424245', lineHeight: 1.6 }}>
+            Choose a template to open it in the editor — fully editable.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
           {templates.map((t) => (
             <TemplateCard key={t.id} template={t} onSelect={onSelect} />
           ))}
