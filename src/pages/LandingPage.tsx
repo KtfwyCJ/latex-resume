@@ -145,6 +145,7 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
           </span>
           <button
             onClick={() => { clearResume(); setDraft(null); }}
+            aria-label="Dismiss"
             style={{ color: '#9a9898', background: 'none', border: 'none', cursor: 'pointer', fontFamily: mono, fontSize: 12 }}
           >
             [-] dismiss
@@ -194,11 +195,6 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
           <button onClick={onOpenGallery} style={primaryBtn}>[+] Browse Templates</button>
           <button onClick={() => inputRef.current?.click()} style={ghostBtn}>Import PDF →</button>
         </div>
-        {error && (
-          <p style={{ marginTop: 16, fontFamily: mono, fontSize: 12, color: '#ff3b30' }}>
-            [x] {error}
-          </p>
-        )}
       </section>
 
       {/* Templates section */}
@@ -267,6 +263,11 @@ export default function LandingPage({ onParsed, onOpenGallery }: Props) {
               PDF only · max 10 MB
             </span>
           </div>
+          {error && (
+            <p style={{ marginTop: 12, fontFamily: mono, fontSize: 12, color: '#ff3b30' }}>
+              [x] {error}
+            </p>
+          )}
         </div>
       </section>
 
