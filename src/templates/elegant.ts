@@ -1,4 +1,4 @@
-const latex = `\\documentclass[11pt,letterpaper]{article}
+const latex: string = `\\documentclass[11pt,letterpaper]{article}
 \\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
 \\usepackage{textcomp}
@@ -78,7 +78,7 @@ Senior corporate attorney with 14 years of experience in mergers \\& acquisition
 \\cvsection{Selected Publications \\& Speaking}
 
 \\begin{itemize}[leftmargin=1.6em,topsep=2pt,itemsep=1pt]
-  \\item ``SPAC Structures in a Post-Regulation Era,'' \\textit{Harvard Business Law Review}, Vol.~14 (2023)
+  \\item \`\`SPAC Structures in a Post-Regulation Era,'' \\textit{Harvard Business Law Review}, Vol.~14 (2023)
   \\item Keynote: \\textit{Cross-Border M\\&A Complexity}, ABA Annual Meeting, Chicago (2022)
 \\end{itemize}
 

@@ -1,4 +1,4 @@
-const latex = `\\documentclass[9.5pt,letterpaper]{article}
+const latex: string = `\\documentclass[9.5pt,letterpaper]{article}
 \\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
 \\usepackage{textcomp}
@@ -60,7 +60,7 @@ const latex = `\\documentclass[9.5pt,letterpaper]{article}
 \\textbf{Software Engineer} \\hfill {\\color{forest}\\textit{LinkedIn}} \\hfill Sunnyvale, CA\\\\
 \\textit{Jul 2012 -- May 2015}
 \\begin{itemize}[leftmargin=1.4em,topsep=1pt,itemsep=1pt]
-  \\item Built member graph traversal engine powering ``People You May Know'' for 100M+ users
+  \\item Built member graph traversal engine powering \`\`People You May Know'' for 100M+ users
   \\item Shipped Kafka integration reducing data pipeline lag from 15~min to under 30~seconds
 \\end{itemize}
 
@@ -82,7 +82,7 @@ const latex = `\\documentclass[9.5pt,letterpaper]{article}
 \\cvsection{Open Source \\& Writing}
 
 \\textbf{Contributor:} Apache Kafka (10+ merged PRs, 500+ commits reviewed)\\\\
-\\textbf{Author:} ``Designing Fault-Tolerant Systems at Scale'' --- ACM Queue, Vol.~21 (2023)
+\\textbf{Author:} \`\`Designing Fault-Tolerant Systems at Scale'' --- ACM Queue, Vol.~21 (2023)
 
 \\end{document}`;
 
