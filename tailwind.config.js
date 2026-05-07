@@ -4,20 +4,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink:          '#080808',
-        paper:        '#faf8f4',
-        'paper-card': '#ffffff',
-        gold:         '#c8a97e',
-        'ink-text':   '#1a1614',
-        'ink-muted':  '#7a6f6a',
-        // Keep original tokens — used by LaTeX template previews
-        primary:   '#1B211A',
-        secondary: '#628141',
-        accent:    '#8BAE66',
-        neutral:   '#EBD5AB',
+        canvas:          '#fdfcfc',
+        ink:             '#201d1d',
+        'ink-deep':      '#0f0000',
+        'surface-soft':  '#f8f7f7',
+        'surface-card':  '#f1eeee',
+        'body-text':     '#424245',
+        mute:            '#646262',
+        ash:             '#9a9898',
+        accent:          '#007aff',
+        danger:          '#ff3b30',
+        success:         '#30d158',
+        warning:         '#ff9f0a',
       },
     },
   },
   plugins: [],
 }
-
