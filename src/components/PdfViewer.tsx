@@ -9,10 +9,11 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 interface Props {
   pdfUrl: string | null;
+  zoom: number;
   onTextClick: (text: string) => void;
 }
 
-export default function PdfViewer({ pdfUrl, onTextClick }: Props) {
+export default function PdfViewer({ pdfUrl, zoom, onTextClick }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,13 +28,16 @@ export default function PdfViewer({ pdfUrl, onTextClick }: Props) {
       const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
       if (cancelled) return;
 
+      const dpr = window.devicePixelRatio || 1;
+
       for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
         if (cancelled) break;
         const page = await pdf.getPage(pageNum);
         if (cancelled) break;
 
         const naturalViewport = page.getViewport({ scale: 1 });
-        const scale = Math.max((container.clientWidth - 24) / naturalViewport.width, 0.5);
+        const baseScale = Math.max((container.clientWidth - 24) / naturalViewport.width, 0.5);
+        const scale = baseScale * zoom;
         const viewport = page.getViewport({ scale });
 
         // Wrapper holds canvas + text layer at the same size
@@ -48,14 +52,15 @@ export default function PdfViewer({ pdfUrl, onTextClick }: Props) {
         ].join('; ');
         container.appendChild(wrapper);
 
-        // Canvas layer
+        // Canvas rendered at DPR resolution, displayed at CSS size — prevents fuzziness on Retina
         const canvas = document.createElement('canvas');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        canvas.style.cssText = 'display: block; width: 100%; height: 100%;';
+        canvas.width = Math.floor(viewport.width * dpr);
+        canvas.height = Math.floor(viewport.height * dpr);
+        canvas.style.cssText = `display: block; width: ${viewport.width}px; height: ${viewport.height}px;`;
         wrapper.appendChild(canvas);
 
         const ctx = canvas.getContext('2d')!;
+        ctx.scale(dpr, dpr);
         // @ts-ignore
         await page.render({ canvasContext: ctx, viewport }).promise;
         if (cancelled) break;
@@ -79,7 +84,7 @@ export default function PdfViewer({ pdfUrl, onTextClick }: Props) {
     })();
 
     return () => { cancelled = true; };
-  }, [pdfUrl]);
+  }, [pdfUrl, zoom]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;

@@ -21,6 +21,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
   const hasChanged = useRef(false);
 
   const [splitPct, setSplitPct] = useState(50);
+  const [zoom, setZoom] = useState(1.0);
   const dragging = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -268,6 +269,13 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
         <div className="flex flex-col overflow-hidden" style={{ width: `${100 - splitPct}%` }}>
           <div style={paneHeader}>
             <span style={paneLabel}>PDF Preview</span>
+            <div className="flex items-center gap-1">
+              <button onClick={() => setZoom(z => Math.max(0.5, +(z - 0.25).toFixed(2)))} style={ghostBtn}>−</button>
+              <span style={{ fontFamily: mono, fontSize: 11, color: '#646262', minWidth: 36, textAlign: 'center' }}>
+                {Math.round(zoom * 100)}%
+              </span>
+              <button onClick={() => setZoom(z => Math.min(3.0, +(z + 0.25).toFixed(2)))} style={ghostBtn}>+</button>
+            </div>
           </div>
 
           <div className="relative flex-1" style={{ background: '#f1eeee' }}>
@@ -283,7 +291,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
             )}
 
             {pdfUrl ? (
-              <PdfViewer pdfUrl={pdfUrl} onTextClick={handleTextClick} />
+              <PdfViewer pdfUrl={pdfUrl} zoom={zoom} onTextClick={handleTextClick} />
             ) : !compiling ? (
               <div className="flex flex-col items-center justify-center h-full gap-2">
                 <span style={{ fontFamily: mono, fontSize: 13, color: '#c4c2c2' }}>[ no preview ]</span>
