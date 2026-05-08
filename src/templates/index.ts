@@ -6,6 +6,7 @@ import executive from './executive';
 import twocolumn from './twocolumn';
 import photo from './photo';
 import infographic from './infographic';
+import ember from './ember';
 
 export interface Template {
   id: string;
@@ -62,6 +63,12 @@ const templates: Template[] = [
     name: 'Infographic',
     description: 'Sidebar with visual skill-bar graphs — modern, data-driven design for technical roles.',
     latex: infographic,
+  },
+  {
+    id: 'ember',
+    name: 'Ember',
+    description: 'Warm red accents with clean sans-serif — engineer-style layout with extending section rules.',
+    latex: ember,
   },
 ];
 
