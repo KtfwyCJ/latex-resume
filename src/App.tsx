@@ -18,7 +18,7 @@ function AppRoutes() {
     <Routes>
       <Route
         path="/"
-        element={<LandingPage onParsed={handleParsed} onOpenGallery={() => navigate('/gallery')} />}
+        element={<LandingPage onOpenEditor={handleParsed} onOpenGallery={() => navigate('/gallery')} />}
       />
       <Route
         path="/gallery"

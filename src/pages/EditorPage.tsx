@@ -128,6 +128,17 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
 
   const copyTex = () => navigator.clipboard.writeText(source);
 
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 's')) {
+        e.preventDefault();
+        compile(source);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [source, compile]);
+
   const ghostBtn: React.CSSProperties = {
     fontFamily: mono,
     fontSize: 11,
@@ -185,15 +196,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={copyTex} style={ghostBtn}>Copy</button>
           <button onClick={downloadTex} style={ghostBtn}>Download .tex</button>
-          <button
-            onClick={() => compile(source)}
-            disabled={compiling}
-            style={{ ...solidBtn, opacity: compiling ? 0.5 : 1, cursor: compiling ? 'not-allowed' : 'pointer' }}
-          >
-            {compiling ? 'Compiling…' : '↺ Recompile'}
-          </button>
           <button
             onClick={downloadPdf}
             disabled={!pdfUrl}
@@ -212,7 +215,13 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
             <span style={paneLabel}>LaTeX Source</span>
             <div className="flex gap-2">
               <button onClick={copyTex} style={ghostBtn}>Copy</button>
-              <button onClick={downloadTex} style={ghostBtn}>Download .tex</button>
+              <button
+                onClick={() => compile(source)}
+                disabled={compiling}
+                style={{ ...solidBtn, opacity: compiling ? 0.5 : 1, cursor: compiling ? 'not-allowed' : 'pointer' }}
+              >
+                {compiling ? 'Compiling…' : '↺ Recompile'}
+              </button>
             </div>
           </div>
 
