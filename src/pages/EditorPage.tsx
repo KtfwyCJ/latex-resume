@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { compileLatex } from '../lib/latexCompiler';
 import { saveResume } from '../lib/resumeStorage';
+import PdfViewer from '../components/PdfViewer';
 
 interface Props {
   initialLatex: string;
@@ -22,6 +23,31 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
   const [splitPct, setSplitPct] = useState(50);
   const dragging = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const editorRef = useRef<any>(null);
+
+  const handleTextClick = useCallback((text: string) => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    const model = editor.getModel();
+    if (!model) return;
+
+    let matches = model.findMatches(text, false, false, true, null, false);
+
+    if (matches.length === 0) {
+      const cleaned = text.replace(/~/g, ' ').replace(/\s+/g, ' ').trim();
+      if (cleaned !== text) {
+        matches = model.findMatches(cleaned, false, false, true, null, false);
+      }
+    }
+
+    if (matches.length === 0) return;
+
+    const range = matches[0].range;
+    editor.revealLineInCenter(range.startLineNumber);
+    editor.setSelection(range);
+  }, []);
 
   const onDividerMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -196,6 +222,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
               value={source}
               onChange={(val) => setSource(val ?? '')}
               theme="vs"
+              onMount={(ed) => { editorRef.current = ed; }}
               options={{
                 fontSize: 13,
                 lineNumbers: 'on',
@@ -256,7 +283,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
             )}
 
             {pdfUrl ? (
-              <iframe src={pdfUrl} className="w-full h-full border-0" title="Compiled PDF" />
+              <PdfViewer pdfUrl={pdfUrl} onTextClick={handleTextClick} />
             ) : !compiling ? (
               <div className="flex flex-col items-center justify-center h-full gap-2">
                 <span style={{ fontFamily: mono, fontSize: 13, color: '#c4c2c2' }}>[ no preview ]</span>
