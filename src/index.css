@@ -14,3 +14,29 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ── PDF.js text layer ─────────────────────────────────────── */
+.textLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  line-height: 1;
+  opacity: 1;
+}
+
+.textLayer > span {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: pointer;
+  transform-origin: 0% 0%;
+}
+
+.textLayer > span:hover {
+  background: rgba(251, 191, 36, 0.18);
+}
+
+.textLayer > span.clicked-word {
+  background: rgba(251, 191, 36, 0.35);
+  outline: 1px solid rgba(251, 191, 36, 0.7);
+}
