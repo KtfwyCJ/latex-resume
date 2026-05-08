@@ -11,9 +11,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const upstream = await fetch(
-      `https://latexonline.cc/compile?text=${encodeURIComponent(source)}`,
-    );
+    const upstream = await fetch('https://latexonline.cc/compile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-tex' },
+      body: source,
+    });
 
     if (!upstream.ok) {
       const text = await upstream.text();

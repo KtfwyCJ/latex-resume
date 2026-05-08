@@ -23,9 +23,11 @@ function latexDevProxyPlugin(): Plugin {
           req.on('end', async () => {
             try {
               const { source } = JSON.parse(body) as { source: string };
-              const upstream = await fetch(
-                `https://latexonline.cc/compile?text=${encodeURIComponent(source)}`,
-              );
+              const upstream = await fetch('https://latexonline.cc/compile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-tex' },
+                body: source,
+              });
 
               if (!upstream.ok) {
                 const text = await upstream.text();
