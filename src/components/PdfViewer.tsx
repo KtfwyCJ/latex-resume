@@ -98,10 +98,11 @@ export default function PdfViewer({ pdfUrl, onTextClick }: Props) {
       ref={containerRef}
       onClick={handleClick}
       style={{
+        position: 'absolute',
+        inset: 0,
         overflowY: 'auto',
         padding: '12px',
         background: '#f1eeee',
-        height: '100%',
       }}
     />
   );
