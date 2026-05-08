@@ -15,20 +15,20 @@ function ResumeFragment({ x, y, rotate, opacity, name, section, bars, bullets }:
   bars: number[];
   bullets: number[];
 }) {
-  const w = 130;
+  const w = 190;
   return (
     <g transform={`translate(${x},${y}) rotate(${rotate})`} opacity={opacity}>
-      <text fontFamily="Georgia,serif" fontSize={11} fontWeight="bold" fill="#201d1d" x={0} y={0}>{name}</text>
-      <line x1={0} y1={4} x2={w} y2={4} stroke="#201d1d" strokeWidth={0.7}/>
-      <text fontFamily="monospace" fontSize={6} fill="#201d1d" letterSpacing={1.5} x={0} y={16}>{section}</text>
-      <line x1={0} y1={19} x2={w} y2={19} stroke="#201d1d" strokeWidth={0.4}/>
+      <text fontFamily="Georgia,serif" fontSize={16} fontWeight="bold" fill="#201d1d" x={0} y={16}>{name}</text>
+      <line x1={0} y1={21} x2={w} y2={21} stroke="#201d1d" strokeWidth={1}/>
+      <text fontFamily="monospace" fontSize={9} fill="#201d1d" letterSpacing={5} x={0} y={33}>{section}</text>
+      <line x1={0} y1={38} x2={w} y2={38} stroke="#201d1d" strokeWidth={0.6}/>
       {bars.map((bw, i) => (
-        <rect key={i} x={0} y={26 + i * 7} width={bw} height={2.5} rx={1} fill="#201d1d" opacity={0.55 - i * 0.05}/>
+        <rect key={i} x={0} y={46 + i * 10} width={bw} height={3.5} rx={1.5} fill="#201d1d" opacity={0.55 - i * 0.05}/>
       ))}
       {bullets.map((bw, i) => (
         <g key={i}>
-          <circle cx={4} cy={26 + bars.length * 7 + 10 + i * 7} r={1.5} fill="#201d1d"/>
-          <rect x={11} y={26 + bars.length * 7 + 7.5 + i * 7} width={bw} height={2.5} rx={1} fill="#201d1d" opacity={0.5 - i * 0.04}/>
+          <circle cx={5} cy={46 + bars.length * 10 + 12 + i * 10} r={2} fill="#201d1d"/>
+          <rect x={13} y={46 + bars.length * 10 + 9 + i * 10} width={bw} height={3.5} rx={1.5} fill="#201d1d" opacity={0.5 - i * 0.04}/>
         </g>
       ))}
     </g>
@@ -52,37 +52,36 @@ export default function LandingPage({ onOpenEditor, onOpenGallery }: Props) {
       <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
         <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
 
-          {/* ── Top-left ── */}
-          <ResumeFragment x={20}  y={45}  rotate={-7} opacity={0.055} name="Alex Chen"     section="EXPERIENCE"      bars={[125,110,118]} bullets={[100,85]}/>
-          <ResumeFragment x={15}  y={210} rotate={-4} opacity={0.04}  name="Maria Santos"  section="EDUCATION"       bars={[120,105]}     bullets={[90]}/>
-          <ResumeFragment x={90}  y={345} rotate={-9} opacity={0.035} name="James Li"      section="SKILLS"          bars={[115,100,108]} bullets={[]}/>
+          {/* ── Left column ── */}
+          <ResumeFragment x={35}  y={50}  rotate={-7} opacity={0.13} name="Alex Chen"     section="EXPERIENCE"      bars={[182,162,172]} bullets={[148,128]}/>
+          <ResumeFragment x={20}  y={245} rotate={-4} opacity={0.10} name="Maria Santos"  section="EDUCATION"       bars={[178,155]}     bullets={[135]}/>
+          <ResumeFragment x={50}  y={450} rotate={-9} opacity={0.11} name="James Li"      section="SKILLS"          bars={[170,148,160]} bullets={[]}/>
+          <ResumeFragment x={30}  y={660} rotate={-6} opacity={0.12} name="David Wilson"  section="EDUCATION"       bars={[180,160,168]} bullets={[142]}/>
+          <ResumeFragment x={15}  y={820} rotate={-8} opacity={0.10} name="Nina Rossi"    section="EXPERIENCE"      bars={[176,158]}     bullets={[136,118]}/>
 
-          {/* ── Top-right ── */}
-          <ResumeFragment x={1270} y={30}  rotate={8}  opacity={0.05}  name="Sarah Kim"    section="EXPERIENCE"      bars={[125,112,120]} bullets={[95,82]}/>
-          <ResumeFragment x={1290} y={195} rotate={5}  opacity={0.04}  name="Tom Park"     section="PUBLICATIONS"    bars={[122,108]}     bullets={[88,75]}/>
-          <ResumeFragment x={1265} y={330} rotate={10} opacity={0.035} name="Emma Davis"   section="EDUCATION"       bars={[118,103]}     bullets={[]}/>
+          {/* ── Left-center column ── */}
+          <ResumeFragment x={330} y={75}  rotate={5}  opacity={0.09} name="Tom Park"      section="PUBLICATIONS"    bars={[178,158]}     bullets={[130,112]}/>
+          <ResumeFragment x={355} y={310} rotate={-7} opacity={0.08} name="Lucas Brown"   section="WORK EXPERIENCE" bars={[184,164,172]} bullets={[145,124]}/>
+          <ResumeFragment x={315} y={555} rotate={6}  opacity={0.09} name="Priya Patel"   section="SKILLS"          bars={[176,154,165]} bullets={[]}/>
+          <ResumeFragment x={345} y={790} rotate={-5} opacity={0.08} name="Ryan Lee"      section="EDUCATION"       bars={[172,150,162]} bullets={[]}/>
 
-          {/* ── Mid-left ── */}
-          <ResumeFragment x={10}  y={420} rotate={-6} opacity={0.045} name="Lucas Brown"   section="WORK EXPERIENCE" bars={[126,111,116]} bullets={[98,84]}/>
-          <ResumeFragment x={40}  y={560} rotate={-10} opacity={0.035} name="Priya Patel"  section="SKILLS"          bars={[120,105,112]} bullets={[]}/>
+          {/* ── Center column (behind hero — slightly more faded) ── */}
+          <ResumeFragment x={630} y={50}  rotate={-3} opacity={0.07} name="Jordan Lee"    section="EXPERIENCE"      bars={[182,162,172]} bullets={[148,126]}/>
+          <ResumeFragment x={610} y={420} rotate={2}  opacity={0.06} name="Alex Park"     section="EDUCATION"       bars={[176,155]}     bullets={[133]}/>
+          <ResumeFragment x={650} y={800} rotate={4}  opacity={0.07} name="Casey Morgan"  section="SKILLS"          bars={[176,154,166]} bullets={[]}/>
 
-          {/* ── Mid-right ── */}
-          <ResumeFragment x={1300} y={425} rotate={7}  opacity={0.04}  name="Chen Wei"     section="PROJECTS"        bars={[124,109,117]} bullets={[92]}/>
-          <ResumeFragment x={1288} y={558} rotate={9}  opacity={0.035} name="Ana Lima"     section="AWARDS"          bars={[119,104]}     bullets={[87]}/>
+          {/* ── Right-center column ── */}
+          <ResumeFragment x={900} y={80}  rotate={-6} opacity={0.09} name="Chen Wei"      section="PROJECTS"        bars={[180,160,172]} bullets={[136]}/>
+          <ResumeFragment x={925} y={325} rotate={7}  opacity={0.08} name="Ana Lima"      section="AWARDS"          bars={[174,152]}     bullets={[128]}/>
+          <ResumeFragment x={890} y={570} rotate={-5} opacity={0.09} name="Emma Davis"    section="SKILLS"          bars={[172,150]}     bullets={[]}/>
+          <ResumeFragment x={915} y={795} rotate={6}  opacity={0.08} name="Omar Hassan"   section="EDUCATION"       bars={[172,150,163]} bullets={[]}/>
 
-          {/* ── Bottom-left ── */}
-          <ResumeFragment x={25}  y={650} rotate={-8} opacity={0.05}  name="David Wilson"  section="EDUCATION"       bars={[123,108,115]} bullets={[96]}/>
-          <ResumeFragment x={10}  y={775} rotate={-5} opacity={0.04}  name="Nina Rossi"    section="EXPERIENCE"      bars={[121,106]}     bullets={[91,78]}/>
-          <ResumeFragment x={80}  y={858} rotate={-9} opacity={0.035} name="Ryan Lee"      section="SKILLS"          bars={[117,102,110]} bullets={[]}/>
-
-          {/* ── Bottom-right ── */}
-          <ResumeFragment x={1255} y={645} rotate={6}  opacity={0.045} name="Yuki Tanaka"  section="EXPERIENCE"      bars={[126,111,119]} bullets={[97,83]}/>
-          <ResumeFragment x={1270} y={768} rotate={9}  opacity={0.04}  name="Sofia Garcia" section="PUBLICATIONS"    bars={[122,107]}     bullets={[89,76]}/>
-          <ResumeFragment x={1248} y={858} rotate={7}  opacity={0.035} name="Omar Hassan"  section="EDUCATION"       bars={[118,103,111]} bullets={[]}/>
-
-          {/* ── Center band (very faded) ── */}
-          <ResumeFragment x={620} y={65}  rotate={-3} opacity={0.028} name="Jordan Lee"    section="EXPERIENCE"      bars={[125,110,118]} bullets={[100,85]}/>
-          <ResumeFragment x={650} y={805} rotate={4}  opacity={0.025} name="Casey Morgan"  section="SKILLS"          bars={[120,105,113]} bullets={[]}/>
+          {/* ── Right column ── */}
+          <ResumeFragment x={1200} y={45}  rotate={8}  opacity={0.13} name="Sarah Kim"    section="EXPERIENCE"      bars={[182,166,176]} bullets={[140,122]}/>
+          <ResumeFragment x={1210} y={240} rotate={5}  opacity={0.10} name="Yuki Tanaka"  section="WORK EXPERIENCE" bars={[184,164,175]} bullets={[144,124]}/>
+          <ResumeFragment x={1195} y={460} rotate={9}  opacity={0.11} name="Sofia Garcia" section="PUBLICATIONS"    bars={[178,158]}     bullets={[132,114]}/>
+          <ResumeFragment x={1205} y={670} rotate={7}  opacity={0.12} name="Tom Chen"     section="EDUCATION"       bars={[174,152,164]} bullets={[]}/>
+          <ResumeFragment x={1198} y={820} rotate={10} opacity={0.10} name="Lena Park"    section="SKILLS"          bars={[176,154,166]} bullets={[]}/>
 
         </svg>
       </div>
