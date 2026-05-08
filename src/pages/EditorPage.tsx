@@ -303,7 +303,7 @@ export default function EditorPage({ initialLatex, onBack }: Props) {
           </div>
 
           <div style={{ padding: '6px 14px', background: '#fdfcfc', borderTop: '1px solid rgba(15,0,0,0.08)', fontFamily: mono, fontSize: 9, letterSpacing: 1, textTransform: 'uppercase', textAlign: 'center', color: '#9a9898' }}>
-            Compiled via LaTeX.Online · click Recompile after edits
+            Compiled via TeXLive.net · click Recompile after edits
           </div>
         </div>
       </div>

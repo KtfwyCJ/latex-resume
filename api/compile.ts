@@ -11,10 +11,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const upstream = await fetch('https://latexonline.cc/compile', {
+    const form = new FormData();
+    form.append('filecontents[]', new Blob([source], { type: 'application/x-tex' }), 'document.tex');
+    form.append('filename[]', 'document.tex');
+    form.append('engine', 'pdflatex');
+    form.append('return', 'pdf');
+
+    const upstream = await fetch('https://texlive.net/cgi-bin/latexcgi', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-tex' },
-      body: source,
+      body: form,
     });
 
     if (!upstream.ok) {
