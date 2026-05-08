@@ -21,83 +21,83 @@ const latex = `\\documentclass[10pt,a4paper]{article}
 \\begin{document}
 
 {\\centering
-  {\\fontsize{38}{46}\\fontseries{l}\\selectfont Alex }%
-  {\\fontsize{38}{46}\\bfseries Morgan}\\par
+  {\\fontsize{38}{46}\\fontseries{l}\\selectfont Jordan }%
+  {\\fontsize{38}{46}\\bfseries Lee}\\par
   \\vspace{4pt}
-  {\\small\\color{accent}\\scshape Software Engineer \\textperiodcentered\\ Open Source Contributor}\\par
+  {\\small\\color{accent}\\scshape Full-Stack Engineer \\textperiodcentered\\ Product-Minded Builder}\\par
   \\vspace{2pt}
-  {\\small\\itshape San Francisco, CA}\\par
+  {\\small\\itshape New York, NY}\\par
   \\vspace{4pt}
   {\\small
-    (555)~123-4567 \\enspace|\\enspace
-    \\href{mailto:alex@email.com}{alex@email.com} \\enspace|\\enspace
-    \\href{https://alexmorgan.dev}{alexmorgan.dev} \\enspace|\\enspace
-    \\href{https://github.com/alexmorgan}{github.com/alexmorgan} \\enspace|\\enspace
-    \\href{https://linkedin.com/in/alexmorgan}{linkedin.com/in/alexmorgan}
+    (212)~555-0192 \\enspace|\\enspace
+    \\href{mailto:jordan.lee@email.com}{jordan.lee@email.com} \\enspace|\\enspace
+    \\href{https://jordanlee.dev}{jordanlee.dev} \\enspace|\\enspace
+    \\href{https://github.com/jordanlee}{github.com/jordanlee} \\enspace|\\enspace
+    \\href{https://linkedin.com/in/jordanlee}{linkedin.com/in/jordanlee}
   }\\par
   \\vspace{8pt}
-  {\\small\\itshape \`\`Be the engineer you want to see in the world.''}\\par
+  {\\small\\itshape \`\`Ship things that matter. Iterate relentlessly.''}\\par
 }
 
 \\vspace{8pt}
 
 \\cvsection{Summary}
 
-Seasoned software engineer with 10+ years of experience in cloud infrastructure, DevOps, and distributed systems. Proven track record scaling engineering teams and delivering high-reliability services at fintech and SaaS companies. Passionate about open-source, infrastructure-as-code, and developer tooling that improves team productivity and operational reliability.
+Full-stack engineer with 8+ years of experience building consumer and enterprise web products from 0 to scale. Strong background in React, Node.js, and cloud-native architectures. Comfortable owning features end-to-end — from API design and database modelling to UI implementation and production monitoring. Enjoys working in small, high-trust teams where speed and quality are both valued.
 
 \\vspace{6pt}
 
 \\cvsection{Work Experience}
 
-\\noindent\\textbf{Acme Cloud Inc.}\\hfill\\textit{San Francisco, CA}\\\\
-{\\scshape\\small Senior DevOps Engineer}\\hfill{\\small\\itshape Jan. 2022 -- Present}
+\\noindent\\textbf{Stripe}\\hfill\\textit{New York, NY}\\\\
+{\\scshape\\small Senior Software Engineer}\\hfill{\\small\\itshape Feb. 2022 -- Present}
 \\begin{itemize}[leftmargin=*,topsep=2pt,itemsep=1pt,parsep=0pt]
-  \\item Led migration of 40+ microservices to Kubernetes on AWS EKS, reducing deployment time by 60\\%.
-  \\item Designed Terraform modules adopted across 15 AWS accounts for standardized, repeatable infrastructure.
-  \\item Implemented GitOps workflows with ArgoCD and Kustomize, improving release confidence and auditability.
+  \\item Redesigned the merchant onboarding flow, reducing time-to-first-payment by 35\\% across 50k+ new accounts per month.
+  \\item Built a real-time fraud signal aggregation service in Go, processing 2M+ events per minute with sub-10ms p99 latency.
+  \\item Led a 4-engineer squad shipping Stripe Tax in 6 new EU jurisdictions, coordinating with legal and compliance teams.
 \\end{itemize}
 
 \\vspace{4pt}
-\\noindent\\textbf{BuildFast Technologies}\\hfill\\textit{Austin, TX}\\\\
-{\\scshape\\small Site Reliability Engineer}\\hfill{\\small\\itshape Mar. 2019 -- Dec. 2021}
+\\noindent\\textbf{Notion}\\hfill\\textit{San Francisco, CA}\\\\
+{\\scshape\\small Software Engineer}\\hfill{\\small\\itshape Aug. 2019 -- Jan. 2022}
 \\begin{itemize}[leftmargin=*,topsep=2pt,itemsep=1pt,parsep=0pt]
-  \\item Established observability stack (Prometheus, Grafana, Elasticsearch) reducing MTTR by 45\\%.
-  \\item Saved 28\\% of monthly cloud spend through instance right-sizing and Spot Fleet strategies.
-  \\item Onboarded Okta SSO across 18 enterprise tools, strengthening security posture and compliance.
+  \\item Owned the collaborative editing engine's conflict-resolution layer, reducing data-loss incidents by 90\\%.
+  \\item Rebuilt the mobile web experience with React and service workers, lifting mobile DAU retention by 18\\%.
+  \\item Introduced end-to-end Playwright test suite covering 120+ critical user journeys, cutting regression rate in half.
 \\end{itemize}
 
 \\vspace{4pt}
-\\noindent\\textbf{Pixel Software Co.}\\hfill\\textit{Remote}\\\\
-{\\scshape\\small Software Engineer}\\hfill{\\small\\itshape Jun. 2016 -- Feb. 2019}
+\\noindent\\textbf{Thoughtworks}\\hfill\\textit{Chicago, IL}\\\\
+{\\scshape\\small Application Developer}\\hfill{\\small\\itshape Jun. 2016 -- Jul. 2019}
 \\begin{itemize}[leftmargin=*,topsep=2pt,itemsep=1pt,parsep=0pt]
-  \\item Built RESTful APIs in Node.js serving 500k+ daily active users at 99.9\\% uptime.
-  \\item Designed CI/CD pipelines on CircleCI using Docker, AWS ECR, and blue-green deployments.
+  \\item Delivered full-stack features for a Fortune 500 retail client's e-commerce platform serving 3M monthly visitors.
+  \\item Mentored 5 junior developers across two client engagements; led internal React training for 20+ consultants.
 \\end{itemize}
 
 \\vspace{6pt}
 
 \\cvsection{Honors \\& Awards}
 
-{\\small\\scshape International Awards}\\par\\vspace{2pt}
+{\\small\\scshape Industry Recognition}\\par\\vspace{2pt}
 \\begin{tabular*}{\\linewidth}{@{}r@{\\quad}l@{\\extracolsep{\\fill}}r@{}}
-  2023 & \\textbf{1st Place,} AWS Global GameDay & \\textit{Online} \\\\
-  2022 & \\textbf{Finalist,} DEFCON 30th CTF Hacking Competition World Final & \\textit{Las Vegas, U.S.A} \\\\
-  2021 & \\textbf{2nd Place,} HashiConf Terraform Challenge & \\textit{Los Angeles, U.S.A} \\\\
+  2023 & \\textbf{Engineering Excellence Award,} Stripe All-Hands & \\textit{New York, NY} \\\\
+  2022 & \\textbf{Top 50 Developers to Watch,} Software Engineering Daily & \\textit{Online} \\\\
+  2020 & \\textbf{Best Developer Tool,} Y Combinator Demo Day (side project) & \\textit{San Francisco, CA} \\\\
 \\end{tabular*}
 
 \\vspace{4pt}
-{\\small\\scshape Domestic Awards}\\par\\vspace{2pt}
+{\\small\\scshape Hackathons}\\par\\vspace{2pt}
 \\begin{tabular*}{\\linewidth}{@{}r@{\\quad}l@{\\extracolsep{\\fill}}r@{}}
-  2022 & \\textbf{Gold Prize,} National Cybersecurity Competition & \\textit{San Francisco, CA} \\\\
-  2020 & \\textbf{Silver Prize,} Bay Area Hackathon & \\textit{San Jose, CA} \\\\
+  2021 & \\textbf{1st Place,} HackNY Fall Hackathon & \\textit{New York, NY} \\\\
+  2019 & \\textbf{Best UX,} TechCrunch Disrupt Hackathon & \\textit{San Francisco, CA} \\\\
 \\end{tabular*}
 
 \\vspace{4pt}
 {\\small\\scshape Community}\\par\\vspace{2pt}
 \\begin{tabular}{@{}r@{\\quad}l@{}}
-  2022 -- & \\textbf{AWS Community Builder (Containers),} Amazon Web Services \\\\
-  2021 -- & \\textbf{HashiCorp Ambassador,} HashiCorp \\\\
-  2019 -- & \\textbf{Organizer, Kubernetes SF Meetup} \\\\
+  2023 -- & \\textbf{Speaker,} React Summit, JSConf, and Strange Loop \\\\
+  2021 -- & \\textbf{Open Source Maintainer,} \\href{https://github.com/jordanlee/typesafe-router}{typesafe-router} (2.4k stars) \\\\
+  2020 -- & \\textbf{Mentor,} Code2040 Fellowship Program \\\\
 \\end{tabular}
 
 \\vspace{6pt}
@@ -105,21 +105,21 @@ Seasoned software engineer with 10+ years of experience in cloud infrastructure,
 \\cvsection{Certificates}
 
 \\begin{tabular}{@{}r@{\\quad}l@{}}
-  2024 & \\textbf{AWS Certified Solutions Architect -- Professional,} Amazon Web Services \\\\
-  2023 & \\textbf{Certified Kubernetes Administrator (CKA),} The Linux Foundation \\\\
-  2023 & \\textbf{HashiCorp Certified: Terraform Associate (003),} HashiCorp \\\\
-  2022 & \\textbf{AWS Certified Security -- Specialty,} Amazon Web Services \\\\
+  2023 & \\textbf{AWS Certified Solutions Architect -- Associate,} Amazon Web Services \\\\
+  2022 & \\textbf{Professional Scrum Master I (PSM I),} Scrum.org \\\\
+  2021 & \\textbf{Google Cloud Professional Data Engineer,} Google Cloud \\\\
+  2020 & \\textbf{MongoDB Certified Developer,} MongoDB University \\\\
 \\end{tabular}
 
 \\vspace{6pt}
 
 \\cvsection{Education}
 
-\\noindent\\textbf{State University of Technology}\\hfill\\textit{California}\\\\
-{\\scshape\\small B.S. in Computer Science}\\hfill{\\small\\itshape Sep. 2012 -- May 2016}
+\\noindent\\textbf{Carnegie Mellon University}\\hfill\\textit{Pittsburgh, PA}\\\\
+{\\scshape\\small B.S. in Computer Science}\\hfill{\\small\\itshape Aug. 2012 -- May 2016}
 \\begin{itemize}[leftmargin=*,topsep=2pt,itemsep=1pt,parsep=0pt]
-  \\item Dean's List (5 semesters); GPA 3.8/4.0
-  \\item Senior thesis: \\textit{Automated Infrastructure Scaling with Predictive Load Modelling}
+  \\item Minor in Human--Computer Interaction; GPA 3.7/4.0
+  \\item Capstone: \\textit{Adaptive UI Generation from Natural Language Descriptions using LLMs}
 \\end{itemize}
 
 \\end{document}`;
